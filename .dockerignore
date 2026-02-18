@@ -1,0 +1,14 @@
+.dockerignore
+Dockerfile
+fly.toml
+
+node_modules
+npm-debug.log
+.env
+.git
+.gitignore
+*.md
+invoices/*.pdf
+uploads/
+logs/
+.DS_Store
