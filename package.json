@@ -2,10 +2,10 @@
   "name": "sasinelwa-invoice",
   "version": "5.0.0",
   "description": "SASINELWA (PTY) Ltd. - Professional Transport Invoice Generator v5 with Weighbridge Matching",
-  "main": "src/index.js",
+  "main": "src/server.js",
   "type": "module",
   "scripts": {
-    "start": "node src/index.js",
+    "start": "node src/server.js",
     "dev": "node --watch src/index.js",
     "process": "node src/process.js",
     "weighbridge": "node src/process-weighbridge.js",
