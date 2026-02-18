@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Tax Invoice #{{invoiceNumber}}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Literata:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0066cc;
+            --accent-bg: #f8f9fa;
+            --text-dark: #000000;
+            --text-medium: #333333;
+            --text-light: #666666;
+            --border-color: #dee2e6;
+            --table-header-bg: #f5f5f5;
+        }
+        
+        @page {
+            size: A4;
+            margin: 20mm;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Literata', serif;
+            font-size: 10pt;
+            color: #1a1a1a;
+            line-height: 1.6;
+            padding: 25px;
+            max-width: 210mm;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+        
+        /* Typography hierarchy */
+        .montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        /* ===== HEADER SECTION ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 10px 0 25px 0;
+            border-bottom: 3px solid #000;
+            position: relative;
+        }
+        
+        .header-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .company-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12pt;
+            font-weight: 800;
+            letter-spacing: 0.6px;
+            margin-bottom: 6px;
+            color: #000;
+            text-transform: uppercase;
+        }
+        
+        .reg-line {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8pt;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .vat-section {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e8e8e8;
+        }
+        
+        .vat-line {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8pt;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .vat-label {
+            font-weight: 700;
+            color: #000;
+        }
+        
+        .header-center {
+            flex: 1;
+            text-align: center;
+            padding: 0 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .logo {
+            width: 200px;
+            height: auto;
+            margin-bottom: -25px;
+        }
+        
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16pt;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #0066cc;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo-pty {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 7pt;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #666;
+            margin-top: 2px;
+            text-transform: uppercase;
+        }
+        
+        .header-right {
+            flex: 1;
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .contact-line {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 10pt;
+            font-weight: 700;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            color: #000;
+        }
+        
+        .contact-separator {
+            width: 100%;
+            height: 1px;
+            background: #e8e8e8;
+            margin: 8px 0;
+        }
+        
+        .contact-icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+        
+        .contact-address {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8pt;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-bottom: 5px;
+            letter-spacing: 0.4px;
+            color: #666;
+        }
+        
+        .contact-email {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 0;
+            text-transform: lowercase;
+        }
+        
+        /* ===== INVOICE DATE & META ===== */
+        .invoice-date {
+            font-family: 'Literata', serif;
+            font-size: 11pt;
+            font-weight: 500;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .meta-section {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+        
+        .meta-line {
+            font-family: 'Literata', serif;
+            font-size: 10pt;
+            margin-bottom: 5px;
+            font-weight: 400;
+            color: #444;
+        }
+        
+        .meta-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .meta-value {
+            font-family: 'Literata', serif;
+            font-weight: 400;
+            color: #444;
+        }
+        
+        /* ===== TAX INVOICE SECTION ===== */
+        .tax-invoice-section {
+            margin-bottom: 25px;
+        }
+        
+        .tax-invoice-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.3px;
+            color: #000;
+        }
+        
+        .client-name {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            color: #0066cc;
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+        
+        .client-address {
+            font-family: 'Literata', serif;
+            font-size: 10pt;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        .client-separator {
+            width: 40%;
+            height: 1px;
+            background: #e8e8e8;
+            margin: 10px 0;
+        }
+        
+        .client-vat {
+            font-family: 'Literata', serif;
+            font-size: 9pt;
+            font-weight: 500;
+            margin-bottom: 3px;
+            color: #555;
+        }
+        
+        .client-reg {
+            font-family: 'Literata', serif;
+            font-size: 9pt;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        /* ===== INVOICE TABLE ===== */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+        
+        .invoice-table th {
+            border: 1px solid #2a2a2a;
+            padding: 10px 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 9pt;
+            text-align: center;
+            background-color: #f8f8f8;
+            vertical-align: bottom;
+            letter-spacing: 0.3px;
+            color: #000;
+        }
+        
+        .invoice-table td {
+            border: 1px solid #2a2a2a;
+            padding: 12px 8px;
+            font-family: 'Literata', serif;
+            font-size: 9pt;
+            font-weight: 400;
+            vertical-align: top;
+            color: #333;
+            text-align: center;
+        }
+        
+        .col-collection {
+            width: 22%;
+        }
+        
+        .col-delivery {
+            width: 22%;
+        }
+        
+        .col-cargo {
+            width: 12%;
+        }
+        
+        .col-rate {
+            width: 16%;
+        }
+        
+        .col-tons {
+            width: 12%;
+        }
+        
+        .col-total {
+            width: 16%;
+        }
+        
+        .td-center {
+            text-align: center;
+        }
+        
+        .td-right {
+            text-align: center;
+        }
+        
+        /* ===== TOTALS ===== */
+        .totals-section {
+            margin-bottom: 35px;
+            margin-top: 20px;
+            padding: 15px 0;
+            position: relative;
+        }
+        
+        .totals-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20%;
+            height: 1px;
+            background: #e8e8e8;
+        }
+        
+        .totals-line {
+            text-align: right;
+            font-family: 'Literata', serif;
+            font-size: 10pt;
+            font-weight: 400;
+            margin-bottom: 5px;
+            letter-spacing: 0.2px;
+            color: #444;
+        }
+        
+        .totals-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .totals-line:last-child {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12pt;
+            font-weight: 700;
+            color: #000;
+            margin-top: 8px;
+            padding-top: 8px;
+            position: relative;
+        }
+        
+        .totals-line:last-child .totals-label {
+            font-weight: 700;
+            color: #000;
+        }
+        
+        .totals-line:last-child::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20%;
+            height: 1px;
+            background: #e8e8e8;
+        }
+        
+        /* ===== BANK DETAILS ===== */
+        .bank-section {
+            margin-top: 35px;
+            padding: 18px 0;
+            border-left: none;
+            border-radius: 0;
+        }
+        
+        .bank-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11pt;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .bank-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30%;
+            height: 1px;
+            background: #e8e8e8;
+        }
+        
+        .bank-line {
+            font-family: 'Literata', serif;
+            font-size: 10pt;
+            margin-bottom: 5px;
+            font-weight: 400;
+            color: #444;
+        }
+        
+        .bank-label {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        /* ===== PAYMENT TERMS ===== */
+        .terms-section {
+            margin-top: 25px;
+            padding: 15px 0;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .terms-line {
+            font-family: 'Literata', serif;
+            font-size: 9pt;
+            color: #666;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+        
+        .thank-you {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11pt;
+            font-weight: 600;
+            color: #0066cc;
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* ===== FOOTER ===== */
+        .watermark {
+            position: fixed;
+            bottom: 48%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            z-index: -1;
+            opacity: 0.03;
+            pointer-events: none;
+        }
+        
+        .watermark-logo {
+            width: 400px;
+            height: auto;
+        }
+        
+        .footer {
+            position: fixed;
+            bottom: 15mm;
+            right: 15mm;
+        }
+        
+        .footer-logo {
+            width: 60px;
+            height: auto;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="header-left">
+        <div class="company-name">SASINELWA (PTY) Ltd.</div>
+        <div class="reg-line">REG: {{company.regNumber}}</div>
+        <div class="vat-section">
+            <div class="vat-line"><span class="vat-label">VAT No:</span> {{company.vatNumber}}</div>
+        </div>
+    </div>
+    
+    <div class="header-center">
+        <img src="{{logoPath}}" alt="SASINELWA" class="logo">
+        <div class="logo-text">SASINELWA</div>
+        <div class="logo-pty">(PTY) Ltd.</div>
+    </div>
+    
+    <div class="header-right">
+        <div class="contact-line">
+            <img src="{{icons.phone}}" alt="" class="contact-icon">
+            <span>{{company.phone}}</span>
+        </div>
+        <div class="contact-separator"></div>
+        <div class="contact-address">
+            <img src="{{icons.pin}}" alt="" class="contact-icon">
+            <span>{{company.address}}, {{company.city}}, {{company.postalCode}}</span>
+        </div>
+        <div class="contact-separator"></div>
+        <div class="contact-email">
+            <img src="{{icons.email}}" alt="" class="contact-icon">
+            <span>{{company.email}}</span>
+        </div>
+    </div>
+</div>
+
+<!-- META DETAILS WITH DATE -->
+<div class="meta-section">
+    <div class="meta-line" style="display: flex; justify-content: space-between; align-items: center;">
+        <span style="font-size: 14px; color: #333;">{{invoiceDate}}</span>
+        <span><span class="meta-label">Transport Order Number:</span> <span class="meta-value">{{transportOrder}}</span></span>
+    </div>
+    <div class="meta-line"><span class="meta-label">File Number:</span> <span class="meta-value">{{fileNumber}}</span></div>
+    {{#instructionDate}}
+    <div class="meta-line"><span class="meta-label">Instruction Date:</span> <span class="meta-value">{{instructionDate}}</span></div>
+    {{/instructionDate}}
+    <div class="meta-line"><span class="meta-label">Delivery Date:</span> <span class="meta-value">{{deliveryDate}} {{vehicleReg}}</span></div>
+</div>
+
+<!-- TAX INVOICE -->
+<div class="tax-invoice-section">
+    <div class="tax-invoice-title">Tax Invoice #{{invoiceNumber}}</div>
+    <div class="client-name">{{clientName}}</div>
+    {{#clientAddress}}
+    <div class="client-address">{{{clientAddress}}}</div>
+    {{/clientAddress}}
+    <div class="client-separator"></div>
+    {{#clientVat}}
+    <div class="client-vat">Vat Number: {{clientVat}}</div>
+    {{/clientVat}}
+    {{#clientReg}}
+    <div class="client-reg">Company Reg. {{clientReg}}</div>
+    {{/clientReg}}
+</div>
+
+<!-- INVOICE TABLE -->
+<table class="invoice-table">
+    <thead>
+        <tr>
+            <th class="col-collection">Collection Point</th>
+            <th class="col-delivery">Delivery point</th>
+            <th class="col-cargo">Cargo Descriptions</th>
+            <th class="col-rate">Transporter instruction</th>
+            <th class="col-tons">Total tons</th>
+            <th class="col-total">Exclusive<br>VAT Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{collectionPoint}}</td>
+            <td>{{deliveryPoint}}</td>
+            <td>{{cargoDescription}}</td>
+            <td>{{rateDisplay}}</td>
+            <td class="td-center">{{quantity}}</td>
+            <td class="td-right">R{{amountExclFormatted}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- TOTALS -->
+<div class="totals-section">
+    <div class="totals-line"><span class="totals-label">Total Excl VAT:</span> R{{amountExclFormatted}}</div>
+    <div class="totals-line"><span class="totals-label">Total VAT:</span> R{{vatAmountFormatted}}</div>
+    <div class="totals-line"><span class="totals-label">Total:</span> R{{totalAmountFormatted}}</div>
+</div>
+
+<!-- BANK DETAILS -->
+<div class="bank-section">
+    <div class="bank-title">Payment Details</div>
+    <div class="bank-line"><span class="bank-label">Bank Name:</span> {{bank.name}}</div>
+    <div class="bank-line"><span class="bank-label">Branch Name:</span> {{bank.branch}}</div>
+    <div class="bank-line"><span class="bank-label">Branch Code:</span> {{bank.code}}</div>
+    <div class="bank-line"><span class="bank-label">Account Number:</span> {{bank.accountNumber}}</div>
+    <div class="bank-line"><span class="bank-label">Account Type:</span> {{bank.accountType}}</div>
+</div>
+
+<!-- WATERMARK -->
+<div class="watermark">
+    <img src="{{logoPath}}" alt="" class="watermark-logo">
+</div>
+
+<!-- FOOTER LOGO -->
+<div class="footer">
+    <img src="{{logoPath}}" alt="SASINELWA" class="footer-logo">
+</div>
+
+</body>
+</html>
