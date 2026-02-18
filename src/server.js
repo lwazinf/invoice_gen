@@ -295,25 +295,13 @@ app.get('/invoices', (req, res) => {
   archive.finalize();
 });
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: err.message });
-});
-
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`SASINELWA API running on port ${PORT}`);
-});
-
-// Email webhook endpoint (CloudMailin/SendGrid sends emails here)
-
-// Email webhook endpoint (add BEFORE error handler)
+// Email webhook endpoint
 app.post('/email', express.raw({ type: 'message/rfc822', limit: '25mb' }), async (req, res) => {
   try {
     console.log('📧 Incoming email webhook');
     
     const { processEmailWithPDF } = await import('./email-handler.js');
     
-    // CloudMailin sends raw email in req.body
     const result = await processEmailWithPDF(req.body);
     
     res.json({
